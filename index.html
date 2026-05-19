@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevAzad × CJP — Hire a Cockroach</title>
+<meta name="description" content="A skilled game & web dev from Ghaziabad. 7 games on Play Store. Still unemployed. Adopt one today.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#07070a;
+  --bg2:#0c0c0f;
+  --amber:#d4a843;
+  --amber-dim:rgba(212,168,67,0.15);
+  --red:#c23b22;
+  --text:#f0ebd8;
+  --muted:#5e5a54;
+  --border:rgba(212,168,67,0.15);
+  --border-hover:rgba(212,168,67,0.5);
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Share Tech Mono',monospace;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CUSTOM CURSOR */
+#cursor{
+  position:fixed;
+  width:20px;height:20px;
+  border:1px solid var(--amber);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .2s,height .2s,background .2s;
+  mix-blend-mode:difference;
+}
+#cursor.hovering{
+  width:40px;height:40px;
+  background:rgba(212,168,67,0.1);
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  padding:1.2rem 4vw;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  background:rgba(7,7,10,0.75);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Teko',sans-serif;
+  font-size:1.3rem;
+  font-weight:600;
+  color:var(--amber);
+  letter-spacing:3px;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+.nav-badge{
+  font-size:0.55rem;
+  background:var(--red);
+  color:#fff;
+  padding:3px 8px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.nav-links{
+  display:flex;
+  gap:2.5rem;
+  list-style:none;
+}
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:0.65rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  transition:color .3s;
+}
+.nav-links a:hover{color:var(--amber)}
+
+/* HERO */
+#hero{
+  position:relative;
+  height:100vh;
+  min-height:650px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+#hero-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;height:100%;
+  z-index:0;
+}
+.hero-content{
+  position:relative;
+  z-index:1;
+  padding:0 6vw;
+  max-width:720px;
+}
+.hero-eyebrow{
+  font-size:0.6rem;
+  letter-spacing:5px;
+  color:var(--red);
+  text-transform:uppercase;
+  margin-bottom:1rem;
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+}
+.hero-eyebrow::before{
+  content:'';
+  display:inline-block;
+  width:30px;height:1px;
+  background:var(--red);
+}
+.hero-name{
+  font-family:'Teko',sans-serif;
+  font-size:clamp(5rem,14vw,10rem);
+  font-weight:700;
+  line-height:.88;
+  color:var(--amber);
+  text-transform:uppercase;
+  letter-spacing:-2px;
+}
+.hero-name span{
+  color:transparent;
+  -webkit-text-stroke:1px var(--amber);
+}
+.hero-role{
+  font-family:'Teko',sans-serif;
+  font-size:clamp(1.2rem,3vw,2rem);
+  font-weight:300;
+  color:var(--text);
+  letter-spacing:6px;
+  text-transform:uppercase;
+  margin:.75rem 0 2rem;
+  opacity:.7;
+}
+.hero-bio{
+  font-size:.72rem;
+  color:var(--muted);
+  line-height:2;
+  max-width:440px;
+  margin-bottom:2.5rem;
+  border-left:2px solid var(--red);
+  padding-left:1.25rem;
+}
+.hero-bio strong{color:var(--amber)}
+.hero-ctas{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+/* BUTTONS */
+.btn{
+  display:inline-block;
+  font-family:'Teko',sans-serif;
+  font-size:1.05rem;
+  font-weight:600;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:.8rem 2.2rem;
+  transition:all .3s;
+  cursor:none;
+}
+.btn-fill{
+  background:var(--amber);
+  color:var(--bg);
+  border:2px solid var(--amber);
+}
+.btn-fill:hover{
+  background:transparent;
+  color:var(--amber);
+}
+.btn-outline{
+  background:transparent;
+  color:var(--text);
+  border:2px solid rgba(240,235,216,0.2);
+}
+.btn-outline:hover{border-color:var(--text)}
+
+/* SCROLL INDICATOR */
+.scroll-line{
+  position:absolute;
+  bottom:0;left:6vw;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.5rem;
+  padding-bottom:1.5rem;
+}
+.scroll-line span{
+  font-size:.55rem;
+  letter-spacing:4px;
+  color:var(--muted);
+  text-transform:uppercase;
+  writing-mode:vertical-rl;
+}
+.scroll-line::after{
+  content:'';
+  width:1px;height:60px;
+  background:linear-gradient(to bottom,var(--muted),transparent);
+  animation:drip 2s ease-in-out infinite;
+}
+@keyframes drip{
+  0%{transform:scaleY(0);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}
+  51%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
+
+/* SECTION BASE */
+section:not(#hero){padding:7rem 6vw}
+.sec-label{
+  font-size:.58rem;
+  letter-spacing:5px;
+  color:var(--red);
+  text-transform:uppercase;
+  margin-bottom:.6rem;
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+}
+.sec-label::before{
+  content:'';
+  display:inline-block;
+  width:20px;height:1px;
+  background:var(--red);
+}
+.sec-title{
+  font-family:'Teko',sans-serif;
+  font-size:clamp(2.5rem,5.5vw,4.5rem);
+  font-weight:700;
+  text-transform:uppercase;
+  line-height:.95;
+  color:var(--text);
+  margin-bottom:.5rem;
+}
+.sec-title em{
+  color:var(--amber);
+  font-style:normal;
+}
+.bar{
+  width:50px;height:2px;
+  background:var(--red);
+  margin:1.5rem 0 3rem;
+}
+
+/* MANIFESTO */
+#manifesto{
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.demands{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+.demand{
+  background:var(--bg2);
+  padding:2rem 1.75rem;
+  position:relative;
+  overflow:hidden;
+  transition:background .3s;
+}
+.demand:hover{background:#10100d}
+.demand::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--amber),transparent);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .4s;
+}
+.demand:hover::after{transform:scaleX(1)}
+.demand-n{
+  font-family:'Teko',sans-serif;
+  font-size:6rem;
+  font-weight:700;
+  line-height:1;
+  color:rgba(212,168,67,.06);
+  position:absolute;
+  top:-.5rem;right:1rem;
+  pointer-events:none;
+}
+.demand-title{
+  font-family:'Teko',sans-serif;
+  font-size:1.7rem;
+  font-weight:600;
+  color:var(--amber);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:.75rem;
+}
+.demand-body{
+  font-size:.7rem;
+  color:var(--muted);
+  line-height:1.9;
+  margin-bottom:1.25rem;
+}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.tag{
+  font-size:.55rem;
+  letter-spacing:1.5px;
+  padding:3px 9px;
+  border:1px solid var(--border);
+  color:rgba(212,168,67,.6);
+  text-transform:uppercase;
+}
+
+/* PROJECTS */
+#evidence{background:var(--bg)}
+.projects{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:1.5rem;
+}
+.card{
+  border:1px solid var(--border);
+  padding:1.75rem;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .3s;
+}
+.card:hover{border-color:var(--border-hover)}
+.card-accent{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:2px;
+  background:linear-gradient(90deg,var(--amber),transparent);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .4s;
+}
+.card:hover .card-accent{transform:scaleX(1)}
+.card-type{
+  font-size:.55rem;
+  letter-spacing:3px;
+  color:var(--red);
+  text-transform:uppercase;
+  margin-bottom:.6rem;
+}
+.card-name{
+  font-family:'Teko',sans-serif;
+  font-size:1.8rem;
+  font-weight:600;
+  color:var(--text);
+  text-transform:uppercase;
+  line-height:1;
+  margin-bottom:.6rem;
+}
+.card-desc{
+  font-size:.68rem;
+  color:var(--muted);
+  line-height:1.9;
+  margin-bottom:1.25rem;
+}
+.card-link{
+  font-size:.6rem;
+  letter-spacing:2px;
+  color:var(--amber);
+  text-decoration:none;
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  transition:gap .3s;
+}
+.card-link:hover{gap:.75rem}
+
+/* HIRE */
+#adopt{
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  text-align:center;
+}
+.adopt-inner{max-width:680px;margin:0 auto}
+.member-card{
+  display:inline-flex;
+  align-items:center;
+  gap:1.25rem;
+  border:1px solid var(--border);
+  padding:1.25rem 2rem;
+  margin-bottom:3rem;
+  text-align:left;
+}
+.roach-icon{font-size:2.5rem;line-height:1}
+.m-name{
+  font-family:'Teko',sans-serif;
+  font-size:1.6rem;
+  font-weight:700;
+  color:var(--amber);
+  text-transform:uppercase;
+  letter-spacing:2px;
+  line-height:1;
+}
+.m-role{
+  font-size:.6rem;
+  color:var(--muted);
+  letter-spacing:2px;
+  margin-top:.25rem;
+}
+.hire-desc{
+  font-size:.72rem;
+  color:var(--muted);
+  line-height:2;
+  margin-bottom:3rem;
+  max-width:500px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.hire-desc strong{color:var(--text)}
+.contact-row{
+  display:flex;
+  justify-content:center;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-bottom:2rem;
+}
+.chai{
+  display:inline-block;
+  font-family:'Teko',sans-serif;
+  font-size:1.15rem;
+  font-weight:600;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:.85rem 2.5rem;
+  border:2px solid rgba(212,168,67,.4);
+  color:rgba(212,168,67,.6);
+  margin-top:1rem;
+  transition:all .3s;
+  cursor:none;
+}
+.chai:hover{
+  border-color:var(--amber);
+  color:var(--amber);
+  background:var(--amber-dim);
+}
+
+/* FOOTER */
+footer{
+  padding:2rem 6vw;
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:1rem;
+  font-size:.58rem;
+  color:var(--muted);
+  letter-spacing:1px;
+}
+footer a{color:var(--muted);text-decoration:none;transition:color .3s}
+footer a:hover{color:var(--amber)}
+.socials{display:flex;gap:1.5rem}
+
+/* FADE-IN ANIMATION */
+.fade-in{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .8s ease,transform .8s ease;
+}
+.fade-in.visible{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .nav-links{display:none}
+  section:not(#hero){padding:4rem 1.5rem}
+  .hero-content{padding:0 1.5rem}
+  .hero-name{letter-spacing:-1px}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">🪳 CJP × DevAzad</a>
+  <ul class="nav-links">
+    <li><a href="#manifesto">Manifesto</a></li>
+    <li><a href="#evidence">Work</a></li>
+    <li><a href="#adopt">Hire</a></li>
+  </ul>
+  <span class="nav-badge">Unofficial Fan Page</span>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Cockroach Janta Party × Cockroach</div>
+    <h1 class="hero-name">Dev<br><span>Azad</span></h1>
+    <p class="hero-role">Game Dev · Web Dev · Unemployed</p>
+    <p class="hero-bio">
+      The system called us <strong>cockroaches</strong>.<br>
+      So here I am. B.Tech IT, 2024.<br>
+      <strong>Multiple games available on Play Store.</strong><br>
+      Built every line alone. Still surviving.<br>
+      Adopt one today.
+    </p>
+    <div class="hero-ctas">
+      <a href="#adopt" class="btn btn-fill">Adopt a Cockroach</a>
+      <a href="#evidence" class="btn btn-outline">See My Work</a>
+    </div>
+  </div>
+  <div class="scroll-line"><span>Scroll</span></div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="sec-label fade-in">01 — The Manifesto</div>
+  <h2 class="sec-title fade-in">My Five <em>Demands</em></h2>
+  <div class="bar fade-in"></div>
+  <div class="demands">
+    <div class="demand fade-in">
+      <span class="demand-n">01</span>
+      <div class="demand-title">Game Development</div>
+      <p class="demand-body">Multiple games shipped solo on Google Play Store. 100+ downloads. Unity, C#, Blender, Gimp — code, art, gameplay, deployment. All me. Give me your game idea. I will build it.</p>
+      <div class="tags">
+        <span class="tag">Unity</span>
+        <span class="tag">C#</span>
+        <span class="tag">WebGL</span>
+        <span class="tag">Android</span>
+        <span class="tag">Blender</span>
+        <span class="tag">Gimp</span>
+      </div>
+    </div>
+    <div class="demand fade-in">
+      <span class="demand-n">02</span>
+      <div class="demand-title">Web Development</div>
+      <p class="demand-body">Agency sites. Web apps. Browser games. From HTML/CSS/JS to Node.js and MySQL. I build things that work, look good, and ship without drama.</p>
+      <div class="tags">
+        <span class="tag">HTML/CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">Three.js</span>
+      </div>
+    </div>
+    <div class="demand fade-in">
+      <span class="demand-n">03</span>
+      <div class="demand-title">I Work Solo</div>
+      <p class="demand-body">No team. No agency. No excuses. Every project on this page — design, code, assets, and deployment — built alone. If you want fast and independent, I'm your roach.</p>
+      <div class="tags">
+        <span class="tag">Solo Dev</span>
+        <span class="tag">Fast Ship</span>
+        <span class="tag">Full Cycle</span>
+      </div>
+    </div>
+    <div class="demand fade-in">
+      <span class="demand-n">04</span>
+      <div class="demand-title">Full Stack Survival</div>
+      <p class="demand-body">B.Tech Information Technology — IMS Engineering College, Ghaziabad, 2024. Four years of building. Zero corporate kitchen yet. Open to work, freelance, or collaboration.</p>
+      <div class="tags">
+        <span class="tag">C++</span>
+        <span class="tag">Python</span>
+        <span class="tag">Git</span>
+        <span class="tag">GitHub</span>
+        <span class="tag">VS Code</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SURVIVAL EVIDENCE / PROJECTS -->
+<section id="evidence">
+  <div class="sec-label fade-in">02 — Survival Evidence</div>
+  <h2 class="sec-title fade-in">Projects <em>That Shipped</em></h2>
+  <div class="bar fade-in"></div>
+  <div class="projects">
+
+    <div class="card fade-in">
+      <div class="card-accent"></div>
+      <div class="card-type">🎮 Android · 100+ Downloads</div>
+      <div class="card-name">Cube Run 3D</div>
+      <p class="card-desc">Infinite levels, procedural terrain generation, touch controls and save system. Solo published on Play Store. The one with actual users.</p>
+      <div class="tags" style="margin-bottom:1.25rem">
+        <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Android</span>
+      </div>
+      <a href="https://play.google.com/store/apps/details?id=com.DevAzad.Cube_Run_3D" target="_blank" class="card-link">Play Store ↗</a>
+    </div>
+
+    <div class="card fade-in">
+      <div class="card-accent"></div>
+      <div class="card-type">🌐 WebGL Browser Game</div>
+      <div class="card-name">Find The Odd</div>
+      <p class="card-desc">Browser game built with Unity WebGL. No install needed. All assets handcrafted solo. Works on any device right in the browser.</p>
+      <div class="tags" style="margin-bottom:1.25rem">
+        <span class="tag">Unity</span><span class="tag">WebGL</span><span class="tag">Gimp</span>
+      </div>
+      <a href="https://findtheodd.netlify.app" target="_blank" class="card-link">Play Now ↗</a>
+    </div>
+
+    <div class="card fade-in">
+      <div class="card-accent"></div>
+      <div class="card-type">🌐 Agency Website</div>
+      <div class="card-name">New Edge Solutions</div>
+      <p class="card-desc">Full professional website for New Edge Solutions. All design and development done solo from a blank canvas to a live domain.</p>
+      <div class="tags" style="margin-bottom:1.25rem">
+        <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span>
+      </div>
+      <a href="https://www.newedgesolutions.in/" target="_blank" class="card-link">Live Site ↗</a>
+    </div>
+
+    <div class="card fade-in">
+      <div class="card-accent"></div>
+      <div class="card-type">🎮 2D Mobile Game</div>
+      <div class="card-name">Spikes & The Ghost</div>
+      <p class="card-desc">2D mobile game on Play Store. Every pixel drawn by hand in Gimp. Sole developer on everything — concept, code, art, sound.</p>
+      <div class="tags" style="margin-bottom:1.25rem">
+        <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Gimp</span>
+      </div>
+      <a href="https://play.google.com/store/apps/details?id=com.DevAzad.SpikesAndTheGhost" target="_blank" class="card-link">Play Store ↗</a>
+    </div>
+
+    <div class="card fade-in">
+      <div class="card-accent"></div>
+      <div class="card-type">🌐 Web App</div>
+      <div class="card-name">ExamEdge</div>
+      <p class="card-desc">Free test preparation platform for competitive exams. Built and deployed independently. Actual utility for actual students.</p>
+      <div class="tags" style="margin-bottom:1.25rem">
+        <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span>
+      </div>
+      <a href="https://examedge.42web.io" target="_blank" class="card-link">Live Site ↗</a>
+    </div>
+
+    <div class="card fade-in">
+      <div class="card-accent"></div>
+      <div class="card-type">🎮 3D Runner · Play Store</div>
+      <div class="card-name">Cube Run 3D 2</div>
+      <p class="card-desc">The sequel. More levels, faster speed, improved procedural terrain. Proof that cockroaches iterate and don't quit after the first launch.</p>
+      <div class="tags" style="margin-bottom:1.25rem">
+        <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Android</span>
+      </div>
+      <a href="https://play.google.com/store/apps/details?id=com.DeepanshuAzad.CubeRun3D2" target="_blank" class="card-link">Play Store ↗</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- HIRE ME / ADOPT -->
+<section id="adopt">
+  <div class="adopt-inner">
+    <div class="sec-label fade-in" style="justify-content:center">03 — Adopt a Cockroach</div>
+    <h2 class="sec-title fade-in">Hire <em>DevAzad</em></h2>
+    <div class="bar fade-in" style="margin-left:auto;margin-right:auto"></div>
+
+    <div class="member-card fade-in">
+      <div class="roach-icon">🪳</div>
+      <div>
+        <div class="m-name">DevAzad</div>
+        <div class="m-role">CJP Member · Game Dev · Web Dev · Ghaziabad, India</div>
+      </div>
+    </div>
+
+    <p class="hire-desc fade-in">
+      I build games and websites.<br>
+      I work <strong>fast</strong>, I work <strong>solo</strong>, and I <strong>ship</strong>.<br>
+      Available for freelance projects, full-time roles,<br>
+      and anything in between.<br>
+      If you need a dev who survives deadlines — you found one.
+    </p>
+
+    <div class="contact-row fade-in">
+      <a href="mailto:contact@cockroachjantapart.lol" class="btn btn-fill">📧 Email Me</a>
+      <a href="https://devazad.com" target="_blank" class="btn btn-outline">Portfolio ↗</a>
+      <a href="https://www.linkedin.com/in/devazad/" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+    </div>
+
+    <div class="fade-in">
+      <!-- Replace the href below with your actual Buy Me a Coffee / Buy Me Chai link -->
+      <a href="https://buymeacoffee.com/devazad" target="_blank" class="chai">
+        ☕ Feed the Cockroach — Buy Me Chai
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div style="margin-bottom:.4rem">🪳 cockroachjantaparty.lol</div>
+    <div>⚠️ Unofficial fan project · Not affiliated with @CJP_2029 or Abhijeet Dipke</div>
+  </div>
+  <div class="socials">
+    <a href="https://github.com/devazad" target="_blank">GitHub</a>
+    <a href="https://devazad.com" target="_blank">devazad.com</a>
+  </div>
+</footer>
+
+<!-- THREE.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─── CUSTOM CURSOR ───────────────────────────────
+const cursorEl = document.getElementById('cursor');
+window.addEventListener('mousemove', e => {
+  cursorEl.style.left = e.clientX + 'px';
+  cursorEl.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('a,.btn,.card,.demand').forEach(el => {
+  el.addEventListener('mouseenter', () => cursorEl.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => cursorEl.classList.remove('hovering'));
+});
+
+// ─── THREE.JS HERO ───────────────────────────────
+const heroEl = document.getElementById('hero');
+const canvas = document.getElementById('hero-canvas');
+const W = () => heroEl.offsetWidth;
+const H = () => heroEl.offsetHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(55, W() / H(), 0.1, 100);
+camera.position.set(0, 1.5, 8);
+camera.lookAt(1, 0, 0);
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setSize(W(), H());
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 0);
+
+// ── LIGHTS ──
+const ambient = new THREE.AmbientLight(0xd4a843, 0.25);
+scene.add(ambient);
+const key = new THREE.DirectionalLight(0xd4a843, 1.4);
+key.position.set(4, 6, 4);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xc23b22, 0.5);
+fill.position.set(-4, -2, -3);
+scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffa040, 0.3);
+rim.position.set(0, -4, 2);
+scene.add(rim);
+
+// ── COCKROACH MESH ──
+function buildRoach() {
+  const g = new THREE.Group();
+
+  const shell = new THREE.MeshPhongMaterial({
+    color: 0x3a1e08, shininess: 150, specular: 0x9b6a2a
+  });
+  const dark = new THREE.MeshPhongMaterial({
+    color: 0x1e0f04, shininess: 40
+  });
+  const eyeM = new THREE.MeshPhongMaterial({
+    color: 0xff3300, emissive: 0xdd2200, emissiveIntensity: 1.0
+  });
+
+  // Abdomen — large flattened oval
+  const abd = new THREE.Mesh(new THREE.SphereGeometry(1, 14, 10), shell);
+  abd.scale.set(1.6, 0.38, 0.9);
+  abd.position.set(0.7, 0, 0);
+  g.add(abd);
+
+  // Abdomen ridge (dorsal stripe)
+  const ridge = new THREE.Mesh(new THREE.SphereGeometry(0.95, 10, 6), dark);
+  ridge.scale.set(1.55, 0.2, 0.4);
+  ridge.position.set(0.7, 0.14, 0);
+  g.add(ridge);
+
+  // Thorax
+  const thor = new THREE.Mesh(new THREE.SphereGeometry(0.65, 12, 8), shell);
+  thor.scale.set(1.05, 0.36, 0.78);
+  thor.position.set(-0.6, 0, 0);
+  g.add(thor);
+
+  // Pronotum (shield behind head)
+  const pronot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 10, 7), shell);
+  pronot.scale.set(0.85, 0.32, 0.7);
+  pronot.position.set(-1.1, 0.03, 0);
+  g.add(pronot);
+
+  // Head
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.3, 10, 7), shell);
+  head.scale.set(0.95, 0.48, 0.7);
+  head.position.set(-1.5, 0, 0);
+  g.add(head);
+
+  // Eyes
+  [-0.16, 0.16].forEach(z => {
+    const eye = new THREE.Mesh(new THREE.SphereGeometry(0.07, 7, 5), eyeM);
+    eye.position.set(-1.62, 0.1, z);
+    g.add(eye);
+  });
+
+  // Legs — 3 pairs, each side
+  // Format: [bodyX, side (+/-1), forwardAngle, outwardRotZ]
+  const legDefs = [
+    [-0.9,  1, -0.25, -1.15],
+    [-0.9, -1,  0.25,  1.15],
+    [-0.3,  1, -0.05, -1.25],
+    [-0.3, -1,  0.05,  1.25],
+    [ 0.5,  1,  0.3,  -1.1 ],
+    [ 0.5, -1, -0.3,   1.1 ],
+  ];
+
+  legDefs.forEach(([lx, side, rx, rz]) => {
+    const geo = new THREE.CylinderGeometry(0.033, 0.018, 1.05, 4);
+    const leg = new THREE.Mesh(geo, dark);
+    leg.position.set(lx, -0.08, side * 0.48);
+    leg.rotation.set(rx, 0, rz);
+    g.add(leg);
+
+    // Tibia (lower segment)
+    const tib = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.022, 0.01, 0.65, 4), dark
+    );
+    tib.position.set(lx + side * 0.02, -0.25, side * 1.05);
+    tib.rotation.set(rx * 0.5, 0, rz * 0.55);
+    g.add(tib);
+  });
+
+  // Antennae
+  [-0.2, 0.2].forEach((z, i) => {
+    // Scape (base)
+    const scape = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.022, 0.015, 1.1, 4), dark
+    );
+    scape.position.set(-2.1, 0.1, z);
+    scape.rotation.set(0, 0, -(Math.PI / 2) + (i === 0 ? -0.35 : 0.35));
+    g.add(scape);
+
+    // Flagellum (whip)
+    const flag = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.012, 0.004, 0.9, 4), dark
+    );
+    flag.position.set(-2.85, 0.25, z * 1.4);
+    flag.rotation.set(0, 0, -(Math.PI / 2) + (i === 0 ? -0.6 : 0.6));
+    g.add(flag);
+  });
+
+  return g;
+}
+
+const roach = buildRoach();
+roach.position.set(2.2, 0, 0);
+roach.rotation.y = 0.4;
+scene.add(roach);
+
+// ── PARTICLE SWARM ──
+const PCOUNT = 420;
+const pPos = new Float32Array(PCOUNT * 3);
+const pVel = [];
+const pBase = []; // home position
+
+for (let i = 0; i < PCOUNT; i++) {
+  // Distribute in an ellipsoid around the scene
+  const u = Math.random(), v = Math.random();
+  const theta = u * Math.PI * 2;
+  const phi = Math.acos(2 * v - 1);
+  const r = 3.5 + Math.random() * 4.5;
+
+  const x = r * Math.sin(phi) * Math.cos(theta);
+  const y = r * Math.sin(phi) * Math.sin(theta) * 0.45;
+  const z = r * Math.cos(phi);
+
+  pPos[i * 3]     = x;
+  pPos[i * 3 + 1] = y;
+  pPos[i * 3 + 2] = z;
+  pBase.push(x, y, z);
+
+  pVel.push({
+    x: (Math.random() - 0.5) * 0.006,
+    y: (Math.random() - 0.5) * 0.004,
+    z: (Math.random() - 0.5) * 0.005,
+  });
+}
+
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+const pMat = new THREE.PointsMaterial({
+  color: 0xd4a843, size: 0.055,
+  transparent: true, opacity: 0.45,
+  sizeAttenuation: true,
+});
+const pts = new THREE.Points(pGeo, pMat);
+scene.add(pts);
+
+// Second layer — dimmer, larger spread
+const pPos2 = new Float32Array(200 * 3);
+for (let i = 0; i < 200; i++) {
+  pPos2[i*3]   = (Math.random()-0.5)*18;
+  pPos2[i*3+1] = (Math.random()-0.5)*8;
+  pPos2[i*3+2] = (Math.random()-0.5)*12;
+}
+const pGeo2 = new THREE.BufferGeometry();
+pGeo2.setAttribute('position', new THREE.BufferAttribute(pPos2, 3));
+const pMat2 = new THREE.PointsMaterial({
+  color: 0xc23b22, size: 0.025,
+  transparent: true, opacity: 0.2,
+  sizeAttenuation: true,
+});
+scene.add(new THREE.Points(pGeo2, pMat2));
+
+// ── MOUSE ──
+const mouse = { x: 0, y: 0, world: new THREE.Vector3() };
+window.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  if (e.clientY > rect.bottom + 50) return;
+  mouse.x = (e.clientX - rect.left) / rect.width * 2 - 1;
+  mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  mouse.world.set(mouse.x * 6, mouse.y * 3.5, 0);
+});
+
+// ── ANIMATE ──
+let t = 0;
+function tick() {
+  requestAnimationFrame(tick);
+  t += 0.012;
+
+  // Cockroach float & breathe
+  roach.rotation.y = Math.sin(t * 0.35) * 0.45 + 0.4;
+  roach.rotation.z = Math.sin(t * 0.22) * 0.06;
+  roach.position.y = Math.sin(t * 0.55) * 0.18;
+  roach.position.x = 2.2 + Math.sin(t * 0.2) * 0.1;
+
+  // Particles
+  const pos = pGeo.attributes.position.array;
+  for (let i = 0; i < PCOUNT; i++) {
+    const ix = i*3, iy = i*3+1, iz = i*3+2;
+
+    // Drift
+    pos[ix] += pVel[i].x;
+    pos[iy] += pVel[i].y;
+    pos[iz] += pVel[i].z;
+
+    // Mouse repulsion
+    const dx = pos[ix] - mouse.world.x;
+    const dy = pos[iy] - mouse.world.y;
+    const dist2D = Math.sqrt(dx*dx + dy*dy);
+    if (dist2D < 2.0 && dist2D > 0.01) {
+      const f = ((2.0 - dist2D) / 2.0) * 0.025;
+      pVel[i].x += (dx / dist2D) * f;
+      pVel[i].y += (dy / dist2D) * f;
+    }
+
+    // Cockroach attraction (swarm around roach)
+    const rdx = pos[ix] - roach.position.x;
+    const rdy = pos[iy] - roach.position.y;
+    const rdz = pos[iz] - roach.position.z;
+    const rd = Math.sqrt(rdx*rdx + rdy*rdy + rdz*rdz);
+    if (rd < 1.8) {
+      pVel[i].x += rdx * 0.0008;
+      pVel[i].y += rdy * 0.0008;
+    }
+
+    // Speed cap
+    const spd = Math.sqrt(pVel[i].x**2 + pVel[i].y**2 + pVel[i].z**2);
+    const MAX_SPD = 0.05;
+    if (spd > MAX_SPD) {
+      pVel[i].x = (pVel[i].x/spd)*MAX_SPD;
+      pVel[i].y = (pVel[i].y/spd)*MAX_SPD;
+      pVel[i].z = (pVel[i].z/spd)*MAX_SPD;
+    }
+
+    // Boundary pull
+    const r = Math.sqrt(pos[ix]**2 + pos[iy]**2 + pos[iz]**2);
+    if (r > 9) {
+      pVel[i].x -= pos[ix] * 0.0012;
+      pVel[i].y -= pos[iy] * 0.0012;
+      pVel[i].z -= pos[iz] * 0.0012;
+    }
+  }
+  pGeo.attributes.position.needsUpdate = true;
+
+  // Slow second layer drift
+  const pos2 = pGeo2.attributes.position.array;
+  for (let i = 0; i < 200; i++) {
+    pos2[i*3]   += 0.002 * Math.sin(t * 0.1 + i);
+    pos2[i*3+1] += 0.001 * Math.cos(t * 0.08 + i * 0.5);
+  }
+  pGeo2.attributes.position.needsUpdate = true;
+
+  // Slow camera drift
+  camera.position.x = Math.sin(t * 0.08) * 0.6;
+  camera.position.y = 1.5 + Math.cos(t * 0.06) * 0.3;
+  camera.lookAt(1.5, 0, 0);
+
+  renderer.render(scene, camera);
+}
+tick();
+
+// ── RESIZE ──
+window.addEventListener('resize', () => {
+  camera.aspect = W() / H();
+  camera.updateProjectionMatrix();
+  renderer.setSize(W(), H());
+});
+
+// ─── SCROLL FADE-INS ─────────────────────────────
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      // Stagger children
+      const items = e.target.querySelectorAll
+        ? Array.from(e.target.closest('section')?.querySelectorAll('.fade-in') || [e.target])
+        : [e.target];
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-in').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 0.1 + 's';
+  io.observe(el);
+});
+</script>
+</body>
+</html>
