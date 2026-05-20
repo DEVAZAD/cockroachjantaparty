@@ -75,6 +75,7 @@
     width: 100%; height: 100%;
     z-index: 0;
     pointer-events: none;
+    will-change: transform;
   }
 
   /* SCANLINES OVERLAY */
@@ -83,6 +84,7 @@
     top: 0; left: 0; right: 0; bottom: 0;
     z-index: 1;
     pointer-events: none;
+    contain: strict;
     background: repeating-linear-gradient(
       0deg,
       transparent,
@@ -100,7 +102,8 @@
     z-index: 1;
     pointer-events: none;
     opacity: 0.03;
-    animation: noiseAnim 0.2s steps(1) infinite;
+    animation: noiseAnim 0.8s steps(1) infinite;
+    will-change: transform;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   }
   @keyframes noiseAnim { 0%,100%{transform:translate(0,0)} 10%{transform:translate(-2%,-2%)} 30%{transform:translate(2%,2%)} 50%{transform:translate(-1%,1%)} 70%{transform:translate(1%,-1%)} 90%{transform:translate(-2%,1%)} }
@@ -647,14 +650,128 @@
     background: rgba(201, 123, 42, 0.06);
   }
 
-  /* MOBILE */
-  @media (max-width: 600px) {
-    .hud { gap: 10px; }
-    .hud-stat { min-width: 140px; }
-    .chai-title { font-size: 48px; }
-    .pledge-slogan { font-size: 36px; }
-    .court-card { padding: 20px 16px; }
-    .skills-grid { grid-template-columns: 1fr 1fr; }
+  /* ══════ MOBILE ══════ */
+
+  /* Marquee animation for legal banner */
+  @keyframes marquee {
+    0%   { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
+
+  @media (hover: none), (max-width: 768px) {
+    /* No cursor on touch devices */
+    .cursor { display: none !important; }
+    body { cursor: auto; }
+
+    /* Legal banner: single-line marquee — saves ~40px of vertical space */
+    .legal-banner {
+      padding: 7px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 7px;
+    }
+    .banner-inner {
+      display: inline-block;
+      padding-left: 16px;
+      animation: marquee 32s linear infinite;
+    }
+
+    /* Match padding-top to single-line banner height (~26px) */
+    main { padding-top: 26px; }
+
+    /* Disable noise on mobile — saves CPU */
+    .noise { display: none; }
+
+    /* Hero */
+    .hero { padding: 16px 12px; min-height: calc(100dvh - 26px); }
+
+    /* Accused tag */
+    .accused-tag { font-size: 6px; padding: 6px 10px; letter-spacing: 1px; margin-bottom: 16px; }
+
+    /* Hero sub */
+    .hero-sub { font-size: 7px; letter-spacing: 1px; line-height: 2.2; }
+
+    /* HUD: 2-column grid */
+    .hud {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+      max-width: 400px;
+      margin: 16px auto;
+    }
+    .hud-stat   { min-width: 0; width: 100%; padding: 8px 10px; font-size: 7px; }
+    .hud-label  { font-size: 6px; margin-bottom: 6px; }
+    .hud-value  { font-size: 7px; }
+
+    /* Cockroach canvas */
+    .cockroach-3d-wrapper { width: 160px; height: 160px; }
+    #roach-canvas         { width: 160px; height: 160px; }
+
+    /* Sections */
+    section { padding: 48px 14px; }
+    .section-label { font-size: 7px; letter-spacing: 1px; flex-wrap: wrap; }
+
+    /* Court card */
+    .court-card { padding: 24px 14px; }
+    .court-card::before {
+      font-size: 5px; left: 10px; letter-spacing: 0;
+      content: '\2696 COURT OF THE UNEMPLOYED \2696';
+    }
+    .charges-list li { font-size: 12px; gap: 8px; }
+    .verdict { font-size: 36px; }
+    .verdict::before { font-size: 16px; }
+
+    /* Bio */
+    .bio-text { font-size: 13px; }
+
+    /* Chai section */
+    .chai-section   { padding: 32px 14px; }
+    .chai-title     { font-size: 44px; }
+    .chai-sub       { font-size: 12px; }
+    .chai-counter   { font-size: 9px; }
+    .chai-count-num { font-size: 28px; }
+
+    /* Chai buttons: stack full width */
+    .chai-btn {
+      display: block !important;
+      width: 100% !important;
+      margin: 8px 0 !important;
+      font-size: 9px;
+      padding: 14px 12px;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    /* Pledge box */
+    .pledge-box { padding: 28px 14px; }
+    .pledge-box::before {
+      font-size: 5.5px; white-space: normal; text-align: center;
+      width: 85%; left: 7.5%; transform: none;
+    }
+    .pledge-slogan { font-size: 30px; letter-spacing: 2px; }
+    .pledge-text   { font-size: 11px; }
+
+    /* Skills */
+    .skills-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .skill-badge { padding: 10px 12px; }
+    .skill-name  { font-size: 11px; }
+
+    /* Socials */
+    .socials     { gap: 10px; }
+    .social-link { font-size: 7px; padding: 8px 10px; }
+
+    /* Footer */
+    .footer-legal { font-size: 9px; line-height: 1.9; }
+    .footer-sig   { font-size: 26px; }
+  }
+
+  /* Extra-small phones (≤380px) */
+  @media (max-width: 380px) {
+    .hero-name   { letter-spacing: 2px; }
+    .hud-stat    { padding: 6px 8px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .charges-list li { font-size: 11px; }
   }
 
   /* Glitch on hover utility */
@@ -944,20 +1061,32 @@
   </p>
 </footer>
 
-<!-- THREE.JS for cockroach and particles -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
 <script>
-// ── CUSTOM CURSOR ──
+// ── TOUCH DETECTION ──
+const IS_TOUCH = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+// ── BANNER MARQUEE (mobile) ──
+if (IS_TOUCH) {
+  const banner = document.querySelector('.legal-banner');
+  if (banner) {
+    const inner = document.createElement('span');
+    inner.className = 'banner-inner';
+    inner.innerHTML = banner.innerHTML;
+    banner.innerHTML = '';
+    banner.appendChild(inner);
+  }
+}
+
+// ── CUSTOM CURSOR (desktop only) ──
 const cursor = document.getElementById('cursor');
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
-});
-document.querySelectorAll('a, button, .skill-badge, .chai-btn').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-});
+if (!IS_TOUCH) {
+  let cx = 0, cy = 0;
+  document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px'; });
+  document.querySelectorAll('a, button, .skill-badge, .chai-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+}
 
 // ── SCROLL REVEAL ──
 const reveals = document.querySelectorAll('.reveal');
@@ -989,195 +1118,255 @@ function incrementChai() {
   try { localStorage.setItem('chai', chaiCount); } catch(e) {}
 }
 
-// ── BG PARTICLE SCENE (Three.js) ──
+// ── BG PARTICLE SCENE (Canvas 2D — replaces Three.js, same look, ~95% lighter) ──
 (function() {
   const canvas = document.getElementById('bg-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  const ctx = canvas.getContext('2d');
+  let W = 0, H = 0;
+  const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 50;
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.scale(DPR, DPR);
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-  // Particles
-  const geo = new THREE.BufferGeometry();
-  const count = 800;
-  const positions = new Float32Array(count * 3);
-  const colors = new Float32Array(count * 3);
-  const sizes = new Float32Array(count);
+  // Reduce particle count on mobile — phones can't push 280 circles at 60fps
+  const COUNT = IS_TOUCH ? 80 : 280;
+  const pts = Array.from({ length: COUNT }, () => ({
+    x: Math.random() * 1.4 - 0.2,   // normalised 0–1 with bleed
+    y: Math.random() * 1.4 - 0.2,
+    z: Math.random(),                // depth 0–1 (parallax)
+    r: Math.random() * 1.4 + 0.4,   // radius px
+    t: Math.random(),                // colour lerp amber→ember
+    vx: (Math.random() - 0.5) * 0.00012,
+    vy: (Math.random() - 0.5) * 0.00012,
+  }));
 
-  for (let i = 0; i < count; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 200;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 200;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
-    const t = Math.random();
-    // amber to ember gradient
-    colors[i * 3] = 0.5 + t * 0.5;   // R
-    colors[i * 3 + 1] = 0.1 + t * 0.4; // G
-    colors[i * 3 + 2] = 0.0;           // B
-    sizes[i] = Math.random() * 2 + 0.5;
+  // Grid lines (drawn once, very cheap)
+  const GRID_COLS = 10, GRID_ROWS = 8;
+
+  let mouse = { x: 0.5, y: 0.5 };
+  let camX = 0.5, camY = 0.5;
+
+  if (IS_TOUCH) {
+    // Gentle auto-drift on touch devices (no mouse to track)
+    let driftT = 0;
+    const driftStep = () => {
+      driftT += 0.004;
+      mouse.x = 0.5 + Math.sin(driftT * 0.7) * 0.25;
+      mouse.y = 0.5 + Math.cos(driftT * 0.5) * 0.2;
+      requestAnimationFrame(driftStep);
+    };
+    driftStep();
+    // Also use device orientation if available
+    window.addEventListener('deviceorientation', e => {
+      if (e.gamma !== null) mouse.x = 0.5 + Math.max(-1, Math.min(1, e.gamma / 30)) * 0.35;
+      if (e.beta  !== null) mouse.y = 0.5 + Math.max(-1, Math.min(1, (e.beta - 45) / 30)) * 0.25;
+    }, { passive: true });
+  } else {
+    document.addEventListener('mousemove', e => {
+      mouse.x = e.clientX / window.innerWidth;
+      mouse.y = e.clientY / window.innerHeight;
+    });
   }
 
-  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+  let frame = 0;
+  function draw() {
+    requestAnimationFrame(draw);
+    frame++;
+    ctx.clearRect(0, 0, W, H);
 
-  const mat = new THREE.PointsMaterial({
-    size: 0.5,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.6,
-    sizeAttenuation: true,
-  });
+    // smooth camera parallax
+    camX += (mouse.x - camX) * 0.03;
+    camY += (mouse.y - camY) * 0.03;
+    const ox = (camX - 0.5) * 30;  // max ±15px
+    const oy = (camY - 0.5) * 20;
 
-  const points = new THREE.Points(geo, mat);
-  scene.add(points);
+    // Grid lines — very dim, drawn with low alpha
+    ctx.save();
+    ctx.translate(ox * 0.3, oy * 0.3);
+    ctx.strokeStyle = 'rgba(26,16,8,0.35)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= GRID_COLS; i++) {
+      const x = (i / GRID_COLS) * W;
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for (let j = 0; j <= GRID_ROWS; j++) {
+      const y = (j / GRID_ROWS) * H;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+    ctx.restore();
 
-  // Grid lines
-  const gridMat = new THREE.LineBasicMaterial({ color: 0x1a1008, transparent: true, opacity: 0.3 });
-  for (let i = -5; i <= 5; i++) {
-    const g1 = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-100, i * 10, -20), new THREE.Vector3(100, i * 10, -20)]);
-    scene.add(new THREE.Line(g1, gridMat));
-    const g2 = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i * 20, -60, -20), new THREE.Vector3(i * 20, 60, -20)]);
-    scene.add(new THREE.Line(g2, gridMat));
+    // Particles
+    for (let i = 0; i < COUNT; i++) {
+      const p = pts[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -0.15) p.x = 1.15; if (p.x > 1.15) p.x = -0.15;
+      if (p.y < -0.15) p.y = 1.15; if (p.y > 1.15) p.y = -0.15;
+
+      // depth-based parallax offset
+      const px = p.x * W + ox * (1 - p.z);
+      const py = p.y * H + oy * (1 - p.z);
+
+      // amber #f0a500 → ember #ff4d00
+      const r = Math.round(240 + (255 - 240) * p.t);
+      const g = Math.round(165 * (1 - p.t));
+      const alpha = 0.25 + p.z * 0.45;
+
+      ctx.beginPath();
+      ctx.arc(px, py, p.r * (0.6 + p.z * 0.8), 0, 6.2832);
+      ctx.fillStyle = `rgba(${r},${g},0,${alpha})`;
+      ctx.fill();
+    }
   }
-
-  let mouse = { x: 0, y: 0 };
-  document.addEventListener('mousemove', e => {
-    mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouse.y = -(e.clientY / window.innerHeight - 0.5) * 2;
-  });
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-
-  function animate() {
-    requestAnimationFrame(animate);
-    points.rotation.y += 0.0003;
-    points.rotation.x += 0.0001;
-    camera.position.x += (mouse.x * 3 - camera.position.x) * 0.02;
-    camera.position.y += (mouse.y * 2 - camera.position.y) * 0.02;
-    camera.lookAt(scene.position);
-    renderer.render(scene, camera);
-  }
-  animate();
+  draw();
 })();
 
-// ── 3D COCKROACH (Three.js) ──
+// ── COCKROACH — Canvas 2D vector art (replaces Three.js WebGL scene) ──
 (function() {
   const canvas = document.getElementById('roach-canvas');
   if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = 200; canvas.height = 200;
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(200, 200);
-  renderer.shadowMap.enabled = true;
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-  camera.position.set(0, 2, 8);
-  camera.lookAt(0, 0, 0);
-
-  // Lighting
-  const ambLight = new THREE.AmbientLight(0x1a0800, 2);
-  scene.add(ambLight);
-  const pointLight = new THREE.PointLight(0xc97b2a, 4, 20);
-  pointLight.position.set(3, 4, 5);
-  scene.add(pointLight);
-  const rimLight = new THREE.PointLight(0x00ffe7, 2, 15);
-  rimLight.position.set(-4, 0, -2);
-  scene.add(rimLight);
-
-  // Cockroach body group
-  const roach = new THREE.Group();
-
-  // Body (main ellipsoid via scaled sphere)
-  const bodyGeo = new THREE.SphereGeometry(1, 12, 8);
-  bodyGeo.scale(1, 0.4, 1.6);
-  const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1a0f00, roughness: 0.3, metalness: 0.7 });
-  const body = new THREE.Mesh(bodyGeo, bodyMat);
-  roach.add(body);
-
-  // Head
-  const headGeo = new THREE.SphereGeometry(0.35, 10, 8);
-  const head = new THREE.Mesh(headGeo, bodyMat);
-  head.position.set(0, 0.05, -1.5);
-  roach.add(head);
-
-  // Legs (6 legs)
-  const legMat = new THREE.MeshStandardMaterial({ color: 0x0f0800, roughness: 0.5 });
-  [[-1, 0.6], [-1, 0], [-1, -0.6], [1, 0.6], [1, 0], [1, -0.6]].forEach(([side, z]) => {
-    const legGeo = new THREE.CylinderGeometry(0.04, 0.02, 1.2, 4);
-    const leg = new THREE.Mesh(legGeo, legMat);
-    leg.position.set(side * 1.1, -0.3, z);
-    leg.rotation.z = side * 0.6;
-    leg.rotation.x = 0.3;
-    roach.add(leg);
+  let targetRX = 0, targetRY = 0, rX = 0, rY = 0;
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    targetRX = ((e.clientX - rect.left) / rect.width - 0.5) * 0.7;
+    targetRY = -((e.clientY - rect.top) / rect.height - 0.5) * 0.4;
   });
+  canvas.addEventListener('mouseleave', () => { targetRX = 0; targetRY = 0; });
 
-  // Antennae
-  const antMat = new THREE.MeshStandardMaterial({ color: 0x2a1500, roughness: 0.8 });
-  [-0.15, 0.15].forEach(x => {
-    const antGeo = new THREE.CylinderGeometry(0.02, 0.01, 2, 4);
-    const ant = new THREE.Mesh(antGeo, antMat);
-    ant.position.set(x, 0.2, -2.2);
-    ant.rotation.x = -0.8;
-    ant.rotation.z = x * 4;
-    roach.add(ant);
-  });
+  // Touch tilt for the cockroach
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    targetRX = ((t.clientX - rect.left) / rect.width - 0.5) * 0.7;
+    targetRY = -((t.clientY - rect.top) / rect.height - 0.5) * 0.4;
+  }, { passive: false });
+  canvas.addEventListener('touchend', () => { targetRX = 0; targetRY = 0; });
 
-  // Wings
-  const wingShape = new THREE.Shape();
-  wingShape.moveTo(0, 0);
-  wingShape.bezierCurveTo(0.5, 0.5, 1, 1, 0.8, 1.5);
-  wingShape.bezierCurveTo(0.5, 2, 0.1, 1.5, 0, 0);
-  const wingGeo = new THREE.ShapeGeometry(wingShape);
-  const wingMat = new THREE.MeshStandardMaterial({
-    color: 0x2a1500, roughness: 0.2, metalness: 0.8,
-    transparent: true, opacity: 0.85, side: THREE.DoubleSide
-  });
-  [-1, 1].forEach(side => {
-    const wing = new THREE.Mesh(wingGeo, wingMat);
-    wing.position.set(side * 0.1, 0.25, -0.5);
-    wing.rotation.x = -Math.PI / 2;
-    wing.rotation.z = side * (-0.3);
-    wing.scale.set(side * 0.9, 0.9, 0.9);
-    roach.add(wing);
-  });
-
-  // Glow sphere
-  const glowGeo = new THREE.SphereGeometry(1.4, 12, 8);
-  const glowMat = new THREE.MeshBasicMaterial({ color: 0xc97b2a, transparent: true, opacity: 0.05, side: THREE.BackSide });
-  const glow = new THREE.Mesh(glowGeo, glowMat);
-  roach.add(glow);
-
-  roach.scale.setScalar(0.9);
-  scene.add(roach);
-
-  let mouseX = 0, mouseY = 0;
-  const roachCanvas = document.getElementById('roach-canvas');
-  roachCanvas.addEventListener('mousemove', e => {
-    const rect = roachCanvas.getBoundingClientRect();
-    mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    mouseY = -((e.clientY - rect.top) / rect.height - 0.5) * 2;
-  });
-
+  const C = { x: 100, y: 100 }; // centre
   let frame = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    frame++;
-    roach.rotation.y += (mouseX * 0.8 - roach.rotation.y) * 0.05;
-    roach.rotation.x += (mouseY * 0.3 - roach.rotation.x) * 0.05;
-    roach.position.y = Math.sin(frame * 0.02) * 0.15;
-    // Pulsing glow
-    glowMat.opacity = 0.04 + Math.sin(frame * 0.03) * 0.02;
-    renderer.render(scene, camera);
+
+  function drawRoach(skewX, floatY, t) {
+    ctx.clearRect(0, 0, 200, 200);
+    ctx.save();
+    ctx.translate(C.x, C.y + floatY);
+
+    // subtle skew based on mouse
+    ctx.transform(1, skewX * 0.08, skewX * -0.05, 1, skewX * 6, 0);
+
+    const amber = '#c97b2a', dark = '#1a0f00', darkLeg = '#0f0800';
+
+    // ── amber glow behind ──
+    const glow = ctx.createRadialGradient(0, 0, 4, 0, 0, 58);
+    glow.addColorStop(0, 'rgba(201,123,42,0.18)');
+    glow.addColorStop(1, 'rgba(201,123,42,0)');
+    ctx.beginPath(); ctx.ellipse(0, 0, 58, 45, 0, 0, Math.PI * 2);
+    ctx.fillStyle = glow; ctx.fill();
+
+    // ── legs (6) — animated ──
+    ctx.strokeStyle = darkLeg; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    const legDefs = [
+      { sx: -18, sy: -8,  ex: -48, ey: -18, phase: 0 },
+      { sx: -20, sy:  0,  ex: -52, ey:  4,  phase: 1 },
+      { sx: -18, sy:  12, ex: -44, ey:  24, phase: 2 },
+      { sx:  18, sy: -8,  ex:  48, ey: -18, phase: 0 },
+      { sx:  20, sy:  0,  ex:  52, ey:  4,  phase: 1 },
+      { sx:  18, sy:  12, ex:  44, ey:  24, phase: 2 },
+    ];
+    legDefs.forEach(l => {
+      const wave = Math.sin(t * 3 + l.phase * 1.2) * 4;
+      ctx.beginPath();
+      ctx.moveTo(l.sx, l.sy);
+      ctx.quadraticCurveTo((l.sx + l.ex) / 2, l.sy + wave - 6, l.ex, l.ey + wave);
+      ctx.stroke();
+    });
+
+    // ── wings (two halves with shine) ──
+    [-1, 1].forEach(side => {
+      ctx.save();
+      ctx.scale(side, 1);
+      ctx.beginPath();
+      ctx.moveTo(2, -22);
+      ctx.bezierCurveTo(22, -18, 26, 2, 22, 22);
+      ctx.bezierCurveTo(14, 30, 4, 22, 2, 10);
+      ctx.closePath();
+      const wingGrad = ctx.createLinearGradient(2, -22, 22, 22);
+      wingGrad.addColorStop(0, '#2a1a00');
+      wingGrad.addColorStop(0.5, '#1a0f00');
+      wingGrad.addColorStop(1, '#100800');
+      ctx.fillStyle = wingGrad;
+      ctx.fill();
+      // wing shine
+      ctx.beginPath();
+      ctx.moveTo(5, -18); ctx.bezierCurveTo(16, -14, 18, -4, 14, 8);
+      ctx.strokeStyle = 'rgba(201,123,42,0.25)'; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.restore();
+    });
+
+    // ── body (pronotum + abdomen) ──
+    const bodyGrad = ctx.createRadialGradient(-8, -10, 2, 0, 0, 30);
+    bodyGrad.addColorStop(0, '#2e1a00');
+    bodyGrad.addColorStop(1, '#0d0700');
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 18, 28, 0, 0, Math.PI * 2);
+    ctx.fillStyle = bodyGrad; ctx.fill();
+    ctx.strokeStyle = 'rgba(201,123,42,0.3)'; ctx.lineWidth = 1; ctx.stroke();
+
+    // ── pronotum (neck shield) ──
+    ctx.beginPath();
+    ctx.ellipse(0, -22, 13, 10, 0, 0, Math.PI * 2);
+    ctx.fillStyle = '#1a0e00'; ctx.fill();
+    ctx.strokeStyle = 'rgba(201,123,42,0.2)'; ctx.lineWidth = 0.8; ctx.stroke();
+
+    // ── head ──
+    ctx.beginPath();
+    ctx.ellipse(0, -34, 8, 7, 0, 0, Math.PI * 2);
+    ctx.fillStyle = '#140a00'; ctx.fill();
+
+    // eyes
+    [-4, 4].forEach(ex => {
+      ctx.beginPath(); ctx.arc(ex, -36, 2.2, 0, Math.PI * 2);
+      ctx.fillStyle = amber; ctx.fill();
+      ctx.beginPath(); ctx.arc(ex + 0.5, -36.5, 0.9, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff4d00'; ctx.fill();
+    });
+
+    // ── antennae ──
+    ctx.strokeStyle = '#3a2000'; ctx.lineWidth = 1.2; ctx.lineCap = 'round';
+    const antWave = Math.sin(t * 1.5) * 6;
+    [[-5, -40], [5, -40]].forEach(([ax, ay], i) => {
+      const sign = i === 0 ? -1 : 1;
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.bezierCurveTo(ax + sign * 8, ay - 12, ax + sign * 20 + antWave * sign, ay - 28, ax + sign * 28 + antWave * sign * 1.5, ay - 38);
+      ctx.stroke();
+    });
+
+    // ── rim light (cyan edge, simulates the Three.js rimLight) ──
+    ctx.beginPath();
+    ctx.ellipse(-12, 8, 6, 14, -0.5, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,255,231,0.04)'; ctx.fill();
+
+    ctx.restore();
   }
-  animate();
+
+  function loop() {
+    requestAnimationFrame(loop);
+    frame++;
+    rX += (targetRX - rX) * 0.05;
+    rY += (targetRY - rY) * 0.05;
+    const floatY = Math.sin(frame * 0.02) * 7;
+    drawRoach(rX, floatY, frame * 0.016);
+  }
+  loop();
 })();
 </script>
 
